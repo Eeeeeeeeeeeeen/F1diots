@@ -1,23 +1,39 @@
-import Head from 'next/head'
-import Header from '@components/Header'
-import Footer from '@components/Footer'
+const CosmosClient = require("@azure/cosmos").CosmosClient;
 
-export default function Home() {
+Home.getInitialProps = async function () {
+  const endpoint = process.env.CosmosEndpoint;
+  const key = process.env.CosmosKey;
+  const database = process.env.CosmosDatabase;
+  const container = process.env.CosmosContainer;
+
+  const client = new CosmosClient({ endpoint, key });
+
+  const databaseID = client.database(database);
+  const containerID = databaseID.container(container);
+
+  if (endpoint) {
+    const querySpec = {
+      query: "SELECT * FROM c",
+    };
+
+    const { resources: items } = await containerID.items
+      .query(querySpec)
+      .fetchAll();
+    return { CosmoData: items };
+  }
+};
+
+export default function Home({ CosmoData }) {
   return (
-    <div className="container">
-      <Head>
-        <title>Next.js Starter!</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <main>
-        <Header title="Welcome to my app!" />
-        <p className="description">
-          Get started by editing <code>pages/index.js</code>
-        </p>
-      </main>
-
-      <Footer />
+    <div>
+      <div className="text-3xl flex mx-2 md:mx-auto my-10 max-w-2xl">
+        HomePage
+      </div>
+      {CosmoData.map(({ id, sessionType, trackName }) => (
+        <div key={id}>
+          {sessionType} & {trackName}
+        </div>
+      ))}
     </div>
-  )
+  );
 }
