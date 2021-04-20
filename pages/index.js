@@ -1,37 +1,20 @@
-const CosmosClient = require("@azure/cosmos").CosmosClient;
+const axios = require('axios');
 
 Home.getInitialProps = async function () {
-  const endpoint = process.env.CosmosEndpoint;
-  const key = process.env.CosmosKey;
-  const database = process.env.CosmosDatabase;
-  const container = process.env.CosmosContainer;
-
-  const client = new CosmosClient({ endpoint, key });
-
-  const databaseID = client.database(database);
-  const containerID = databaseID.container(container);
-
-  if (endpoint) {
-    const querySpec = {
-      query: "SELECT * FROM c",
-    };
-
-    const { resources: items } = await containerID.items
-      .query(querySpec)
-      .fetchAll();
-    return { CosmoData: items };
-  }
+  //TODO - check if this is the best way to call the local API
+  const result = await axios.get('http://localhost:3000/api/raceData')
+  return { TrackSessionData: result.data };
 };
 
-export default function Home({ CosmoData }) {
+export default function Home({ TrackSessionData }) {
   return (
     <div>
       <div className="text-3xl flex mx-2 md:mx-auto my-10 max-w-2xl">
         HomePage
       </div>
-      {CosmoData.map(({ id, sessionType, trackName }) => (
+      {TrackSessionData.resources.map(({ id, sessionType, trackName }) => (
         <div key={id}>
-          {sessionType} & {trackName}
+          {sessionType} @ {trackName}
         </div>
       ))}
     </div>
