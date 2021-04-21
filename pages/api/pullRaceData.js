@@ -1,11 +1,12 @@
 const ftp = require("basic-ftp");
 const path = require("path");
 const fs = require("fs");
+const os = require('os');
 
 const client = new ftp.Client();
 client.ftp.verbose = true;
 
-const tmpDir = "/Temp";
+const tmpDir = os.tmpdir();
 
 export default async function handler(req, res) {
   const results = await GetResults();
@@ -14,10 +15,6 @@ export default async function handler(req, res) {
 }
 
 async function GetResults() {
-  if (!fs.existsSync(tmpDir)) {
-    fs.mkdirSync(tmpDir);
-  }
-
   try {
     await client.access({
       host: process.env.RaceDataFtpHost,
