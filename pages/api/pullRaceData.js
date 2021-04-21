@@ -5,7 +5,7 @@ const fs = require("fs");
 const client = new ftp.Client();
 client.ftp.verbose = true;
 
-const tmpDir = process.env.RaceDataTmpPath || ".tmpRaceData/";
+const tmpDir = "/Temp";
 
 export default async function handler(req, res) {
   const results = await GetResults();
