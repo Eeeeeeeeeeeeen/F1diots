@@ -1,5 +1,3 @@
-const axios = require("axios");
-
 export async function getServerSideProps(context) {
   const res = await fetch(`${process.env.DEPLOY_URL}/api/raceData`);
   const data = await res.json();
