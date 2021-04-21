@@ -1,5 +1,5 @@
 export async function getServerSideProps(context) {
-  const res = await fetch(`${process.env.DEPLOY_URL}/api/raceData`);
+  const res = await fetch(`http://localhost/api/raceData`);
   const data = await res.json();
   return { props: { TrackSessionData: data } };
 }
