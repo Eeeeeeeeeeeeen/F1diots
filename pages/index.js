@@ -1,37 +1,20 @@
-const CosmosClient = require("@azure/cosmos").CosmosClient;
+import useSWR from "swr";
 
-Home.getInitialProps = async function () {
-  const endpoint = process.env.CosmosEndpoint;
-  const key = process.env.CosmosKey;
-  const database = process.env.CosmosDatabase;
-  const container = process.env.CosmosContainer;
+const fetcher = (url) => fetch(url).then((res) => res.json());
 
-  const client = new CosmosClient({ endpoint, key });
+export default function Home() {
+  const { data, error } = useSWR("/api/raceData", fetcher);
 
-  const databaseID = client.database(database);
-  const containerID = databaseID.container(container);
-
-  if (endpoint) {
-    const querySpec = {
-      query: "SELECT * FROM c",
-    };
-
-    const { resources: items } = await containerID.items
-      .query(querySpec)
-      .fetchAll();
-    return { CosmoData: items };
-  }
-};
-
-export default function Home({ CosmoData }) {
+  if (error) return "An error has occured";
+  if (!data) return "Loading";
   return (
     <div>
       <div className="text-3xl flex mx-2 md:mx-auto my-10 max-w-2xl">
         HomePage
       </div>
-      {CosmoData.map(({ id, sessionType, trackName }) => (
+      {data.resources.map(({ id, sessionType, trackName }) => (
         <div key={id}>
-          {sessionType} & {trackName}
+          {sessionType} @ {trackName}
         </div>
       ))}
     </div>
