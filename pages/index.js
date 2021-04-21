@@ -1,10 +1,10 @@
-const axios = require('axios');
+const axios = require("axios");
 
-Home.getInitialProps = async function () {
-  //TODO - check if this is the best way to call the local API
-  const result = await axios.get('http://localhost:3000/api/raceData')
-  return { TrackSessionData: result.data };
-};
+export async function getServerSideProps(context) {
+  const res = await fetch(`${process.env.DEPLOY_URL}/api/raceData`);
+  const data = await res.json();
+  return { props: { TrackSessionData: data } };
+}
 
 export default function Home({ TrackSessionData }) {
   return (
