@@ -1,16 +1,18 @@
-export async function getServerSideProps(context) {
-  const res = await fetch( 'https://127.0.0.1/api/raceData');
-  const data = await res.json();
-  return { props: { TrackSessionData: data } };
-}
+import useSWR from "swr";
 
-export default function Home({ TrackSessionData }) {
+const fetcher = (url) => fetch(url).then((res) => res.json());
+
+export default function Home() {
+  const { data, error } = useSWR("/api/raceData", fetcher);
+
+  if (error) return "An error has occured";
+  if (!data) return "Loading";
   return (
     <div>
       <div className="text-3xl flex mx-2 md:mx-auto my-10 max-w-2xl">
         HomePage
       </div>
-      {TrackSessionData.resources.map(({ id, sessionType, trackName }) => (
+      {data.resources.map(({ id, sessionType, trackName }) => (
         <div key={id}>
           {sessionType} @ {trackName}
         </div>
