@@ -26,7 +26,7 @@ export default function Home({ trackData }) {
       </Thead>
       <Tbody>
         {trackData.map(({ id, sessionType, trackName }) => (
-          <Tr>
+          <Tr key={id}>
             <Td>{formatACCDateTime(id)}</Td>
             <Td textTransform="capitalize">{trackName.replace("_", " ")}</Td>
             <Td>{sessionType}</Td>
