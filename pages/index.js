@@ -8,7 +8,24 @@ export async function getStaticProps(context) {
   return { props: { trackData: data } };
 }
 
+function formatDateString(id) {
+  const dt = formatACCDateTime(id);
+
+  const year = dt.getFullYear().toString().substring(2);
+  const month = dt.getMonth();
+  const day = dt.getDate();
+
+  const hour = dt.getHours().toString();
+  const minutes = dt.getMinutes().toString();
+
+  return `${day}/${month}/${year} ${hour.length > 1 ? hour : "0" + hour}:${
+    minutes.length > 1 ? minutes : "0" + minutes
+  }`;
+}
+
 export default function Home({ trackData }) {
+  trackData.sort((a, b) => formatACCDateTime(b.id) - formatACCDateTime(a.id));
+
   return (
     <Table
       variant="striped"
@@ -27,7 +44,7 @@ export default function Home({ trackData }) {
       <Tbody>
         {trackData.map(({ id, sessionType, trackName }) => (
           <Tr key={id}>
-            <Td>{formatACCDateTime(id)}</Td>
+            <Td>{formatDateString(id)}</Td>
             <Td textTransform="capitalize">{trackName.replace("_", " ")}</Td>
             <Td>{sessionType}</Td>
           </Tr>

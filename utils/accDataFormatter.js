@@ -1,7 +1,6 @@
 export function formatACCDateTime(date) {
   const res = date.split("_");
 
-  //Every 2 characters, add a /
   const d = formatDate(res[0]);
 
   const t = res[1]
@@ -9,13 +8,14 @@ export function formatACCDateTime(date) {
     .match(/.{1,2}/g)
     .join(":");
 
-  return `${d} ${t}`;
+  const ISODate = new Date(`${d}T${t}`);
+  return ISODate;
 }
 
 function formatDate(date) {
-  const sDate = date.match(/.{1,2}/g);
-  const reversedDate = sDate[2] + sDate[1] + sDate[0];
+  //Add a 20 to the year and format as an actual date
+  const sDate = `20${date.match(/.{1,2}/g).join("-")}`;
 
   //Every 2 characters, add a /
-  return reversedDate.match(/.{1,2}/g).join("/");
+  return sDate;
 }
