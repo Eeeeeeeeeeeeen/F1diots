@@ -19,3 +19,18 @@ function formatDate(date) {
   //Every 2 characters, add a /
   return sDate;
 }
+
+export const formatDateString = (id) => {
+  const dt = formatACCDateTime(id);
+
+  const year = dt.getFullYear().toString().substring(2);
+  const month = dt.getMonth();
+  const day = dt.getDate();
+
+  const hour = dt.getHours().toString();
+  const minutes = dt.getMinutes().toString();
+
+  return `${day}/${month}/${year} ${hour.length > 1 ? hour : "0" + hour}:${
+    minutes.length > 1 ? minutes : "0" + minutes
+  }`;
+};
