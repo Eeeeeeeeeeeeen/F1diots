@@ -38,7 +38,7 @@ export default function Home({ trackData }) {
             onClick={() => handleClick(id)}
           >
             <Td>{formatDateString(id)}</Td>
-            <Td textTransform="capitalize">{trackName.replace("_", " ")}</Td>
+            <Td textTransform="capitalize">{trackName.split("_").join(" ")}</Td>
             <Td>{sessionType}</Td>
           </Tr>
         ))}

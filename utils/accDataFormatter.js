@@ -9,6 +9,7 @@ export function formatACCDateTime(date) {
     .join(":");
 
   const ISODate = new Date(`${d}T${t}`);
+  console.log(ISODate.toString());
   return ISODate;
 }
 
@@ -24,7 +25,7 @@ export const formatDateString = (id) => {
   const dt = formatACCDateTime(id);
 
   const year = dt.getFullYear().toString().substring(2);
-  const month = dt.getMonth();
+  const month = dt.getMonth() + 1;
   const day = dt.getDate();
 
   const hour = dt.getHours().toString();
