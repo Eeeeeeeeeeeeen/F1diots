@@ -26,7 +26,7 @@ export default function Race({ raceData }) {
 
   return (
     <Container maxW="750px" mt="20px">
-      <Tabs mb="20px">
+      <Tabs mb="20px" isFitted colorScheme="orange">
         <TabList>
           {drivers.map((driver) => (
             <Tab>{driver[0]}</Tab>
