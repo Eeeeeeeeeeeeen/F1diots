@@ -1,8 +1,9 @@
 const hasuraAdminSecret = process.env.HasuraAdminSecret
+const hasuraEndpoint = process.env.HasuraEndpoint
 
 async function fetchGraphQL(operationsDoc, operationName, variables) {
   const result = await fetch(
-    "https://f1diots-hasura.hasura.app/v1/graphql",
+    hasuraEndpoint,
     {
       method: "POST",
       body: JSON.stringify({
@@ -19,7 +20,7 @@ async function fetchGraphQL(operationsDoc, operationName, variables) {
   return await result.json();
 }
 
-export function fetchMyQuery(track_name) {
+export function fetchTrackLeaderboard(track_name) {
   const operationsDoc = `
       query TrackLeaderBoardQuery {
         lap(order_by: {lap_time: asc, driver: {}}, where: {session_leaderboard_line_laps: {session_leaderboard_line: {session_leader_board_lines: {session: {track_name: {_eq: "${track_name}"}}}}}}, limit: 10) {
