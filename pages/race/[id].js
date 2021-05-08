@@ -2,14 +2,13 @@ import { Container, Heading } from "@chakra-ui/layout";
 import { Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/table";
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/tabs";
 import { calulateLapTime } from "../../utils/timeFormatter";
+import { fetchSessionData } from "../../utils/dataFetcher";
 
 export async function getServerSideProps(context) {
-  const res = await fetch(
-    `${process.env.RaceDataAPI}/raceData/${context.params.id}`
-  );
-  const data = await res.json();
+  const res = await fetchSessionData(context.params.id);
+  console.log(res.data)
 
-  return { props: { raceData: data } };
+  return { props: { raceData: res.data } };
 }
 
 export default function Race({ raceData }) {

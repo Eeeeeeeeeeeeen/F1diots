@@ -62,3 +62,20 @@ export function fetchTrackLeaderboard(track_name) {
     );
   }
   
+  export function fetchSessionData(sessionId) {
+    const operationsDoc = 
+    `query SessionQuery {
+        session(where: {id: {_eq: "${sessionId}"}}) {
+          session_type
+          timestamp
+          track_name
+          wet
+        }
+      }`
+      
+    return fetchGraphQL(
+      operationsDoc,
+      "SessionQuery",
+      {}
+    );
+  }
