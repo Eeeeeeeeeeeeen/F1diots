@@ -24,15 +24,15 @@ async function fetchGraphQL(operationsDoc, operationName, variables) {
 export function fetchTrackLeaderboard(track_name) {
     const operationsDoc = `
         query TrackLeaderBoardQuery {
-          lap(order_by: {lap_time: asc, driver: {}}, where: {session_leaderboard_line_laps: {session_leaderboard_line: {session_leader_board_lines: {session: {track_name: {_eq: "${track_name}"}}}}}}, limit: 10) {
+          lap(order_by: {lap_time: asc, driver: {}}, where: {valid_for_best: {_eq: true}}) {
             driver_player_id
             id
             lap_time
             driver {
-              first_name
-              last_name
-              player_id
-              short_name
+                first_name
+                last_name
+                player_id
+                short_name
             }
           }
         }
@@ -66,10 +66,32 @@ export function fetchTrackLeaderboard(track_name) {
     const operationsDoc = 
     `query SessionQuery {
         session(where: {id: {_eq: "${sessionId}"}}) {
+          id
           session_type
           timestamp
           track_name
           wet
+          session_leader_board_lines {
+            session_leaderboard_line {
+              team_name
+              car_id
+              car_model
+              race_number
+              session_leaderboard_line_laps {
+                lap {
+                  driver {
+                    first_name
+                    last_name
+                    player_id
+                    short_name
+                  }
+                  lap_time
+                  splits
+                  valid_for_best
+                }
+              }
+            }
+          }
         }
       }`
       

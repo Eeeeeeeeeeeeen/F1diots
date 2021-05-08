@@ -16,8 +16,13 @@ export default function Home({ trackData }) {
 
   trackData.sort((a, b) => b.timestamp - a.timestamp);
 
-  const handleClick = (id) => {
+  const handleSessionClick = (id) => {
     router.push(`/race/${id}`);
+  };
+
+  const handleTrackClick = (e, id) => {
+    e.stopPropagation(); 
+    router.push(`/track/${id}`);
   };
 
   return (
@@ -37,10 +42,10 @@ export default function Home({ trackData }) {
             _hover={{ background: "orange.700" }}
             data-id={session.id}
             data-blah={"id"}
-            onClick={() => handleClick(session.id)}
+            onClick={() => handleSessionClick(session.id)}
           >
             <Td>{formatDateString(session.id)}</Td>
-            <Td textTransform="capitalize">{session.track_name.split("_").join(" ")}</Td>
+            <Td textTransform="capitalize" onClick={(e) => handleTrackClick(e, session.track_name)}>{session.track_name.split("_").join(" ")}</Td>
             <Td>{session.session_type}</Td>
           </Tr>
         ))}
