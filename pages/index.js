@@ -1,18 +1,20 @@
 import { Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/table";
 import { formatACCDateTime, formatDateString } from "utils/accDataFormatter";
 import { useRouter } from "next/router";
+import { fetchSessions } from "../utils/dataFetcher";
 
 export async function getServerSideProps(context) {
-  const res = await fetch(`${process.env.RaceDataAPI}/raceData`);
-  const data = await res.json();
+  //const res1 = await fetch(`${process.env.RaceDataAPI}/raceData`);
+  const res = await fetchSessions();
+  console.log(res.data)
 
-  return { props: { trackData: data } };
+  return { props: { trackData: res.data.session } };
 }
 
 export default function Home({ trackData }) {
   const router = useRouter();
 
-  trackData.sort((a, b) => formatACCDateTime(b.id) - formatACCDateTime(a.id));
+  trackData.sort((a, b) => b.timestamp - a.timestamp);
 
   const handleClick = (id) => {
     router.push(`/race/${id}`);
@@ -28,18 +30,18 @@ export default function Home({ trackData }) {
         </Tr>
       </Thead>
       <Tbody>
-        {trackData.map(({ id, sessionType, trackName }) => (
+        {trackData.map((session) => (
           <Tr
-            key={id}
+            key={session.id}
             cursor="pointer"
             _hover={{ background: "orange.700" }}
-            data-id={id}
+            data-id={session.id}
             data-blah={"id"}
-            onClick={() => handleClick(id)}
+            onClick={() => handleClick(session.id)}
           >
-            <Td>{formatDateString(id)}</Td>
-            <Td textTransform="capitalize">{trackName.split("_").join(" ")}</Td>
-            <Td>{sessionType}</Td>
+            <Td>{formatDateString(session.id)}</Td>
+            <Td textTransform="capitalize">{session.track_name.split("_").join(" ")}</Td>
+            <Td>{session.session_type}</Td>
           </Tr>
         ))}
       </Tbody>

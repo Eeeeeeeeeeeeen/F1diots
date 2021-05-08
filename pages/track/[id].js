@@ -4,7 +4,6 @@ import { Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/tabs";
 import { calulateLapTime } from "../../utils/timeFormatter";
 import { fetchTrackLeaderboard } from "../../utils/dataFetcher";
 
-
 export async function getServerSideProps(context) {
   const res = await fetchTrackLeaderboard(context.params.id);
   
