@@ -63,25 +63,11 @@ export function fetchTrackLeaderboard(track_name) {
   
   export function fetchSessionData(sessionId) {
     const operationsDoc = 
-    `query SessionQuery {
+    `
+    query SessionQuery {
       lap(where: {session_leaderboard_line_laps: {session_leaderboard_line: {session_id: {_eq: "${sessionId}"}}}}) {
         driver {
-          first_name
-          last_name
           player_id
-          short_name
-        }
-        session_leaderboard_line_laps {
-          session_leaderboard_line {
-            car {
-              car_class
-              id
-              name
-              year
-            }
-            cup_category
-            race_number
-          }
         }
         lap_time
         valid_for_best
@@ -99,8 +85,7 @@ export function fetchTrackLeaderboard(track_name) {
         short_name
         player_id
       }
-    }
-    
+    }    
     `
       
     return fetchGraphQL(

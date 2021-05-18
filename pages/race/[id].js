@@ -6,7 +6,6 @@ import { fetchSessionData } from "../../utils/dataFetcher";
 
 export async function getServerSideProps(context) {
   const res = await fetchSessionData(context.params.id);
-  console.log(res.data)
 
   return { props: { raceData: res.data } };
 }
@@ -21,10 +20,10 @@ export default function Race({ raceData }) {
           ))}
         </TabList>
         <TabPanels>
-          {raceData.lap.map((lap) => (
+          {raceData.driver.map((driver) => (
             <TabPanel>
               <Heading as="h2" size="lg">
-                {`${lap.driver.first_name}`} {`${lap.driver.last_name}`}
+                {`${driver.first_name}`} {`${driver.last_name}`}
               </Heading>
               <Table mb="40px">
                 <Thead>
@@ -36,12 +35,14 @@ export default function Race({ raceData }) {
                   </Tr>
                 </Thead>
                 <Tbody>
+                {raceData.lap.filter((lap) => lap.driver.player_id === driver.player_id).map((lap) => (
                   <Tr key={lap.lap_time}>
                     <Td fontWeight="bold">{calulateLapTime(lap.lap_time)}</Td>
                     {lap.splits.split(",").map((split) => (
                       <Td>{calulateLapTime(split)}</Td>
                     ))}
                   </Tr>
+                ))}
                 </Tbody>
               </Table>
             </TabPanel>
