@@ -4,7 +4,6 @@ import { useRouter } from "next/router";
 import { fetchSessions } from "../utils/dataFetcher";
 
 export async function getServerSideProps(context) {
-  //const res1 = await fetch(`${process.env.RaceDataAPI}/raceData`);
   const res = await fetchSessions();
   console.log(res.data)
 

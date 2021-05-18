@@ -2,7 +2,6 @@ const hasuraAdminSecret = process.env.HasuraAdminSecret
 const hasuraEndpoint = process.env.HasuraEndpoint
 
 async function fetchGraphQL(operationsDoc, operationName, variables) {
-  console.log(hasuraEndpoint)
   const result = await fetch(
     hasuraEndpoint,
     {
@@ -23,19 +22,19 @@ async function fetchGraphQL(operationsDoc, operationName, variables) {
 
 export function fetchTrackLeaderboard(track_name) {
     const operationsDoc = `
-        query TrackLeaderBoardQuery {
-          lap(order_by: {lap_time: asc, driver: {}}, where: {valid_for_best: {_eq: true}}) {
-            driver_player_id
-            id
-            lap_time
-            driver {
-                first_name
-                last_name
-                player_id
-                short_name
-            }
+      query TrackLeaderBoardQuery {
+        lap(order_by: {lap_time: asc, driver: {}}, where: {valid_for_best: {_eq: true}, session_leaderboard_line_laps: {session_leaderboard_line: {session_leader_board_lines: {session: {track_name: {_eq: "${track_name}"}}}}}}) {
+          driver_player_id
+          id
+          lap_time
+          driver {
+            first_name
+            last_name
+            player_id
+            short_name
           }
         }
+      }
       `;
     return fetchGraphQL(
       operationsDoc,
@@ -47,7 +46,7 @@ export function fetchTrackLeaderboard(track_name) {
   
   export function fetchSessions(offset=0,limit=10) {
     const operationsDoc = `query SessionQuery {
-        session(limit: ${limit}, offset: ${offset}) {
+        session(limit: ${limit}, offset: ${offset}, order_by: {timestamp: desc}) {
           id
           session_type
           timestamp
@@ -65,35 +64,44 @@ export function fetchTrackLeaderboard(track_name) {
   export function fetchSessionData(sessionId) {
     const operationsDoc = 
     `query SessionQuery {
-        session(where: {id: {_eq: "${sessionId}"}}) {
-          id
-          session_type
-          timestamp
-          track_name
-          wet
-          session_leader_board_lines {
-            session_leaderboard_line {
-              team_name
-              car_id
-              car_model
-              race_number
-              session_leaderboard_line_laps {
-                lap {
-                  driver {
-                    first_name
-                    last_name
-                    player_id
-                    short_name
-                  }
-                  lap_time
-                  splits
-                  valid_for_best
-                }
-              }
+      lap(where: {session_leaderboard_line_laps: {session_leaderboard_line: {session_id: {_eq: "${sessionId}"}}}}) {
+        driver {
+          first_name
+          last_name
+          player_id
+          short_name
+        }
+        session_leaderboard_line_laps {
+          session_leaderboard_line {
+            car {
+              car_class
+              id
+              name
+              year
             }
+            cup_category
+            race_number
           }
         }
-      }`
+        lap_time
+        valid_for_best
+        splits
+      }
+      session(where: {id: {_eq: "${sessionId}"}}) {
+        session_type
+        timestamp
+        track_name
+        wet
+      }
+      driver(where: {laps: {session_leaderboard_line_laps: {session_leaderboard_line: {session_id: {_eq: "${sessionId}"}}}}}) {
+        first_name
+        last_name
+        short_name
+        player_id
+      }
+    }
+    
+    `
       
     return fetchGraphQL(
       operationsDoc,
