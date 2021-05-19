@@ -2,41 +2,28 @@ import { Container, Heading } from "@chakra-ui/layout";
 import { Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/table";
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/tabs";
 import { calulateLapTime } from "../../utils/timeFormatter";
+import { fetchSessionData } from "../../utils/dataFetcher";
 
 export async function getServerSideProps(context) {
-  const res = await fetch(
-    `${process.env.RaceDataAPI}/raceData/${context.params.id}`
-  );
-  const data = await res.json();
+  const res = await fetchSessionData(context.params.id);
 
-  return { props: { raceData: data } };
+  return { props: { raceData: res.data } };
 }
 
 export default function Race({ raceData }) {
-  const drivers = [];
-  raceData.sessionResult.leaderBoardLines.map(
-    ({ car, currentDriver, timing }) =>
-      drivers.push([
-        `${currentDriver.firstName[0]}. ${currentDriver.lastName}`,
-        car,
-        raceData.laps.filter((lap) => lap.carId === car.carId),
-        timing.bestLap,
-      ])
-  );
-
   return (
     <Container maxW="750px" mt="20px">
       <Tabs mb="20px" isFitted colorScheme="orange">
         <TabList>
-          {drivers.map((driver) => (
-            <Tab>{driver[0]}</Tab>
+          {raceData.driver.map((driver) => (
+            <Tab>{driver.short_name}</Tab>
           ))}
         </TabList>
         <TabPanels>
-          {drivers.map((driver) => (
+          {raceData.driver.map((driver) => (
             <TabPanel>
               <Heading as="h2" size="lg">
-                {`${driver[0]} - ${driver[1].carDetails.name}`}
+                {`${driver.first_name}`} {`${driver.last_name}`}
               </Heading>
               <Table mb="40px">
                 <Thead>
@@ -48,20 +35,14 @@ export default function Race({ raceData }) {
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {driver[2].map((l) => (
-                    <Tr
-                      key={l.laptime}
-                      backgroundColor={
-                        l.laptime === driver[3] ? "orange.800" : ""
-                      }
-                    >
-                      <Td fontWeight="bold">{calulateLapTime(l.laptime)}</Td>
-
-                      {l.splits.map((split) => (
-                        <Td>{calulateLapTime(split)}</Td>
-                      ))}
-                    </Tr>
-                  ))}
+                {raceData.lap.filter((lap) => lap.driver.player_id === driver.player_id).map((lap) => (
+                  <Tr key={lap.lap_time}>
+                    <Td fontWeight="bold">{calulateLapTime(lap.lap_time)}</Td>
+                    {lap.splits.split(",").map((split) => (
+                      <Td>{calulateLapTime(split)}</Td>
+                    ))}
+                  </Tr>
+                ))}
                 </Tbody>
               </Table>
             </TabPanel>
