@@ -6,7 +6,7 @@ import { fetchDriverBestTimes } from "../../utils/dataFetcher";
 
 export async function getServerSideProps(context) {
   const res = await fetchDriverBestTimes(context.params.id);
-  const best_laps = res.data.lap.sort((a, b) => a.lap_time < b.lap_time ? - 1 : Number(a.lap_time > b.lap_time))
+  const best_laps = res.data.lap.sort((a, b) => a.lap_time < b.lap_time ? - 1 : 1)
   
   return { props: { raceData: best_laps } };
 }
