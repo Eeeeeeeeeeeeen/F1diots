@@ -2,12 +2,13 @@ import { Container, Heading } from "@chakra-ui/layout";
 import { Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/table";
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/tabs";
 import { calulateLapTime } from "../../utils/timeFormatter";
-import { fetchTrackLeaderboard } from "../../utils/dataFetcher";
+import { fetchDriverBestTimes } from "../../utils/dataFetcher";
 
 export async function getServerSideProps(context) {
-  const res = await fetchTrackLeaderboard(context.params.id);
+  const res = await fetchDriverBestTimes(context.params.id);
+  const best_laps = res.data.lap.sort((a, b) => a.lap_time < b.lap_time ? - 1 : Number(a.lap_time > b.lap_time))
   
-  return { props: { raceData: res.data.lap } };
+  return { props: { raceData: best_laps } };
 }
 
 export default function Track({ raceData }) {
