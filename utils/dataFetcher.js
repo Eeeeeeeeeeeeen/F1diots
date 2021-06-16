@@ -30,9 +30,7 @@ export function fetchDriverBestTimes(track_name) {
             session_leaderboard_line {
               car {
                 car_class
-                id
                 name
-                year
               }
             }
           }

@@ -22,7 +22,6 @@ export default function Track({ raceData }) {
             <Th>LapTime</Th>
             <Th>Driver</Th>
             <Th>Car</Th>
-            <Th>Class</Th>
           </Tr>
         </Thead>
         <Tbody>
@@ -31,7 +30,6 @@ export default function Track({ raceData }) {
               <Td fontWeight="bold">{calulateLapTime(l.laps[0].lap_time)}</Td>
               <Td>{l.first_name} {l.last_name}</Td>
               <Td>{l.laps[0].session_leaderboard_line_laps[0].session_leaderboard_line.car.name}</Td>
-              <Td>{l.laps[0].session_leaderboard_line_laps[0].session_leaderboard_line.car.car_class}</Td>
             </Tr>
           ))}
         </Tbody>
