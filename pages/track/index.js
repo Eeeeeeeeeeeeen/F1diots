@@ -12,7 +12,6 @@ export default function Home({ tracks }) {
   
 
   const handleTrackClick = (id) => {
-    console.log(id);
     router.push(`/track/${id}`);
   };
 

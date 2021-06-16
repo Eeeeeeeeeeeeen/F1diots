@@ -22,18 +22,28 @@ async function fetchGraphQL(operationsDoc, operationName, variables) {
 
 export function fetchDriverBestTimes(track_name) {
     const operationsDoc = `
-      query TrackLeaderBoardQuery {
-        driver(where: {}) {
-          laps(where: {session_leaderboard_line_laps: {session_leaderboard_line: {session_leader_board_lines: {session: {track_name: {_eq: "${track_name}"}}}}, lap: {valid_for_best: {_eq: true}}}, lap_time: {}}, order_by: {lap_time: asc}, limit: 1) {
-            lap_time
+    query TrackLeaderBoardQuery {
+      driver(where: {}) {
+        laps(where: {session_leaderboard_line_laps: {session_leaderboard_line: {session_leader_board_lines: {session: {track_name: {_eq: "${track_name}"}}}}, lap: {valid_for_best: {_eq: true}}}, lap_time: {}}, order_by: {lap_time: asc}, limit: 1) {
+          lap_time
+          session_leaderboard_line_laps {
+            session_leaderboard_line {
+              car {
+                car_class
+                id
+                name
+                year
+              }
+            }
           }
-          first_name
-          last_name
-          player_id
-          short_name
         }
+        first_name
+        last_name
+        player_id
+        short_name
       }
-      `;
+    }
+    `;
     return fetchGraphQL(
       operationsDoc,
       "TrackLeaderBoardQuery",
