@@ -92,3 +92,17 @@ export function fetchDriverBestTimes(track_name) {
       {}
     );
   }
+
+  export function fetchTracks() {
+    const operationsDoc = 
+    `query TrackQuery {
+      session(distinct_on: track_name) {
+        track_name
+      }
+    }` 
+    return fetchGraphQL(
+      operationsDoc,
+      "TrackQuery",
+      {}
+    );
+  }
