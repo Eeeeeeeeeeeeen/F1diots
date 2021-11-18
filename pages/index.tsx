@@ -53,19 +53,19 @@ const HomePage = () => (
           position="center"
           style={{ margin: "0 auto" }}
         >
-          <Image src={f1diotsProd} width="350px" height="350px" alt='F idiots podcast' />
+          <Image src={f1diotsProd} width="350px" height="350px" alt='F idiots podcast' placeholder='blur' />
           <Group position="center" spacing="xl">
             <Link
               href="https://open.spotify.com/show/28IacAlwJ4C6oYjI9OcOUA"
               passHref
             >
               <a>
-                <Image src={spotifyIcon} width="100px" height="100px" alt='spotify icon' />
+                <Image src={spotifyIcon} width="100px" height="100px" alt='spotify icon' placeholder='blur' />
               </a>
             </Link>
             <Link href="https://pod.space/thef1diotspodcast" passHref>
               <a>
-                <Image src={podspaceIcon} width="100px" height="100px" alt='podspace icon' />
+                <Image src={podspaceIcon} width="100px" height="100px" alt='podspace icon' placeholder='blur' />
               </a>
             </Link>
             <Link
@@ -73,7 +73,7 @@ const HomePage = () => (
               passHref
             >
               <a>
-                <Image src={appleIcon} width="100px" height="100px" alt='apple icon' />
+                <Image src={appleIcon} width="100px" height="100px" alt='apple icon' placeholder='blur' />
               </a>
             </Link>
           </Group>
