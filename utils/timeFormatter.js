@@ -27,6 +27,5 @@ export const calulateLapTime = (millis) => {
     millis = `0${millis}`;
   }
 
-  console.log(`original: ${time.millis} - new: ${millis} - ${millis.length}`);
   return `${minutes}:${seconds}:${millis}`;
 };
