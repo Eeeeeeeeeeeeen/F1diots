@@ -31,7 +31,17 @@ export const formatDateString = (id) => {
   const hour = dt.getHours().toString();
   const minutes = dt.getMinutes().toString();
 
-  return `${day}/${month}/${year} ${hour.length > 1 ? hour : "0" + hour}:${
-    minutes.length > 1 ? minutes : "0" + minutes
-  }`;
+  return `${day}/${month}/${year} ${hour.length > 1 ? hour : "0" + hour}:${minutes.length > 1 ? minutes : "0" + minutes
+    }`;
 };
+
+export const sessionType = (session) => {
+  switch (session) {
+    case "FP":
+      return "Free Practice";
+    case "Q":
+      return "Qualifying";
+    case "R":
+      return "Race";
+  }
+}

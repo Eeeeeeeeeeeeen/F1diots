@@ -19,15 +19,14 @@ export const calulateLapTime = (millis) => {
 
   const minutes = time.minute < 10 ? `0${time.minute}` : time.minute;
   const seconds = time.seconds < 10 ? `0${time.seconds}` : time.seconds;
-  var millis;
-  switch (time.millis) {
-    case time.millis < 10:
-      millis = `00${time.millis}`;
-      break;
-    case time.millis < 100:
-      millis = `0${time.millis}`;
-    default:
-      millis = time.millis;
+  var millis = parseInt(time.millis);
+
+  if (millis < 10) {
+    millis = `00${millis}`;
+  } else if (millis < 100) {
+    millis = `0${millis}`;
   }
+
+  console.log(`original: ${time.millis} - new: ${millis} - ${millis.length}`);
   return `${minutes}:${seconds}:${millis}`;
 };

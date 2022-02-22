@@ -5,7 +5,6 @@ import { fetchSessions } from "../utils/dataFetcher";
 
 export async function getServerSideProps(context) {
   const res = await fetchSessions();
-  console.log(res.data)
 
   return { props: { trackData: res.data.session } };
 }
@@ -20,7 +19,7 @@ export default function Home({ trackData }) {
   };
 
   const handleTrackClick = (e, id) => {
-    e.stopPropagation(); 
+    e.stopPropagation();
     router.push(`/track/${id}`);
   };
 
@@ -44,7 +43,7 @@ export default function Home({ trackData }) {
             onClick={() => handleSessionClick(session.id)}
           >
             <Td>{formatDateString(session.id)}</Td>
-            <Td textTransform="capitalize" onClick={(e) => handleTrackClick(e, session.track_name)}>{session.track_name.split("_").join(" ")}</Td>
+            <Td textTransform="capitalize" _hover={{ 'textDecoration': 'underline', color: "cyan.400" }} onClick={(e) => handleTrackClick(e, session.track_name)}>{session.track_name.split("_").join(" ")}</Td>
             <Td>{session.session_type}</Td>
           </Tr>
         ))}
