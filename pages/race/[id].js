@@ -39,6 +39,18 @@ export default function Race({ raceData }) {
     driver.laps[fastestLapIndex].fastest = true;
   });
 
+  const fastestColor = (lapTime, fastest) => {
+    if (!fastest) {
+      return "";
+    }
+
+    if (lapTime == fastestSessionLap.time) {
+      return "purple.300";
+    } else {
+      return "green.300";
+    }
+  };
+
   return (
     <Container maxW="750px" mt="20px">
       <Heading textTransform={"capitalize"} mb={5}>
@@ -77,7 +89,7 @@ export default function Race({ raceData }) {
                     .map((lap, index) => (
                       <Tr
                         key={lap.lap_time}
-                        color={lap.fastest ? "green.300" : ""}
+                        color={fastestColor(lap.lap_time, lap.fastest)}
                       >
                         <Td>{index + 1}</Td>
                         {lap.splits.split(",").map((split) => (
