@@ -1,5 +1,5 @@
-const convertMS = (milliseconds) => {
-  var hour, minute, seconds;
+const convertMS = (milliseconds: number) => {
+  var hour: number, minute: number, seconds: number;
   seconds = Math.floor(milliseconds / 1000);
   minute = Math.floor(seconds / 60);
   seconds = seconds % 60;
@@ -14,18 +14,19 @@ const convertMS = (milliseconds) => {
   };
 };
 
-export const calulateLapTime = (millis) => {
+export function calulateLapTime(millis: number) {
   const time = convertMS(millis);
 
   const minutes = time.minute < 10 ? `0${time.minute}` : time.minute;
   const seconds = time.seconds < 10 ? `0${time.seconds}` : time.seconds;
-  var millis = parseInt(time.millis);
+  var milliseconds: number = time.millis;
+  var mills: string = "000";
 
-  if (millis < 10) {
-    millis = `00${millis}`;
-  } else if (millis < 100) {
-    millis = `0${millis}`;
+  if (milliseconds < 10) {
+    mills = `00${milliseconds}`;
+  } else if (milliseconds < 100) {
+    mills = `0${milliseconds}`;
   }
 
-  return `${minutes}:${seconds}:${millis}`;
-};
+  return `${minutes}:${seconds}:${mills}`;
+}

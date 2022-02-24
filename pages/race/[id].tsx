@@ -64,12 +64,14 @@ export default function Race({ raceData }) {
       <Tabs mb="20px" isFitted colorScheme="orange">
         <TabList>
           {raceData.driver.map((driver) => (
-            <Tab>{driver.short_name}</Tab>
+            <Tab key={`${driver.short_name}-${driver.player_id}`}>
+              {driver.short_name}
+            </Tab>
           ))}
         </TabList>
         <TabPanels>
           {raceData.driver.map((driver) => (
-            <TabPanel>
+            <TabPanel key={driver.player_id}>
               <Heading as="h2" size="lg">
                 {`${driver.first_name}`} {`${driver.last_name}`}
               </Heading>
@@ -93,7 +95,7 @@ export default function Race({ raceData }) {
                       >
                         <Td>{index + 1}</Td>
                         {lap.splits.split(",").map((split) => (
-                          <Td>{calculateLapTime(split)}</Td>
+                          <Td key={split}>{calculateLapTime(split)}</Td>
                         ))}
                         <Td fontWeight="bold">
                           {calculateLapTime(lap.lap_time)}

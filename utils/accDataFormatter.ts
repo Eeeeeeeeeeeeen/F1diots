@@ -1,4 +1,4 @@
-export function formatACCDateTime(date) {
+export function formatACCDateTime(date: string) {
   const res = date.split("_");
 
   const d = formatDate(res[0]);
@@ -9,11 +9,10 @@ export function formatACCDateTime(date) {
     .join(":");
 
   const ISODate = new Date(`${d}T${t}`);
-  console.log(ISODate.toString());
   return ISODate;
 }
 
-function formatDate(date) {
+function formatDate(date: string): string {
   //Add a 20 to the year and format as an actual date
   const sDate = `20${date.match(/.{1,2}/g).join("-")}`;
 
@@ -21,7 +20,7 @@ function formatDate(date) {
   return sDate;
 }
 
-export const formatDateString = (id) => {
+export const formatDateString = (id: string) => {
   const dt = formatACCDateTime(id);
 
   const year = dt.getFullYear().toString().substring(2);
@@ -31,11 +30,12 @@ export const formatDateString = (id) => {
   const hour = dt.getHours().toString();
   const minutes = dt.getMinutes().toString();
 
-  return `${day}/${month}/${year} ${hour.length > 1 ? hour : "0" + hour}:${minutes.length > 1 ? minutes : "0" + minutes
-    }`;
+  return `${day}/${month}/${year} ${hour.length > 1 ? hour : "0" + hour}:${
+    minutes.length > 1 ? minutes : "0" + minutes
+  }`;
 };
 
-export const sessionType = (session) => {
+export const sessionType = (session: string): string => {
   switch (session) {
     case "FP":
       return "Free Practice";
@@ -44,4 +44,4 @@ export const sessionType = (session) => {
     case "R":
       return "Race";
   }
-}
+};
