@@ -19,16 +19,16 @@ export default function Race({ raceData }) {
     driver.laps = raceData.lap.filter(
       (lap) => lap.driver.player_id === driver.player_id
     );
-    var fastestLapIndex = 0;
-
+    var fastestLapIndex: number = 0;
     driver.laps.forEach((lap, index) => {
       fastestLapIndex =
-        lap.lap_time < driver.laps[fastestLapIndex].lap_time
+        lap.lap_time < driver.laps[fastestLapIndex].lap_time &&
+        lap.valid_for_best
           ? index
           : fastestLapIndex;
 
       fastestSessionLap =
-        lap.lap_time < fastestSessionLap.time
+        lap.lap_time < fastestSessionLap.time && lap.valid_for_best
           ? {
               driver: `${driver.first_name[0]}. ${driver.last_name}`,
               time: lap.lap_time,
@@ -39,8 +39,8 @@ export default function Race({ raceData }) {
     driver.laps[fastestLapIndex].fastest = true;
   });
 
-  const fastestColor = (lapTime, fastest) => {
-    if (!fastest) {
+  const fastestColor = (lapTime, fastest, valid) => {
+    if (!fastest || !valid) {
       return "";
     }
 
@@ -91,13 +91,20 @@ export default function Race({ raceData }) {
                     .map((lap, index) => (
                       <Tr
                         key={lap.lap_time}
-                        color={fastestColor(lap.lap_time, lap.fastest)}
+                        color={!lap.valid_for_best ? "gray.600" : ""}
                       >
                         <Td>{index + 1}</Td>
                         {lap.splits.split(",").map((split) => (
                           <Td key={split}>{calculateLapTime(split)}</Td>
                         ))}
-                        <Td fontWeight="bold">
+                        <Td
+                          fontWeight="bold"
+                          color={fastestColor(
+                            lap.lap_time,
+                            lap.fastest,
+                            lap.valid_for_best
+                          )}
+                        >
                           {calculateLapTime(lap.lap_time)}
                         </Td>
                       </Tr>

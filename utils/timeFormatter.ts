@@ -26,6 +26,8 @@ export function calulateLapTime(millis: number) {
     mills = `00${milliseconds}`;
   } else if (milliseconds < 100) {
     mills = `0${milliseconds}`;
+  } else {
+    mills = `${milliseconds}`;
   }
 
   return `${minutes}:${seconds}:${mills}`;

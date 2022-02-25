@@ -11,7 +11,6 @@ export async function getServerSideProps(context) {
 
 export default function Home({ trackData }) {
   const router = useRouter();
-
   trackData.sort((a, b) => b.timestamp - a.timestamp);
 
   const handleSessionClick = (id) => {
@@ -37,13 +36,19 @@ export default function Home({ trackData }) {
           <Tr
             key={session.id}
             cursor="pointer"
-            _hover={{ background: "orange.700" }}
+            _hover={{ background: "red.700" }}
             data-id={session.id}
             data-blah={"id"}
             onClick={() => handleSessionClick(session.id)}
           >
             <Td>{formatDateString(session.id)}</Td>
-            <Td textTransform="capitalize" _hover={{ 'textDecoration': 'underline', color: "cyan.400" }} onClick={(e) => handleTrackClick(e, session.track_name)}>{session.track_name.split("_").join(" ")}</Td>
+            <Td
+              textTransform="capitalize"
+              _hover={{ textDecoration: "underline", color: "cyan.400" }}
+              onClick={(e) => handleTrackClick(e, session.track_name)}
+            >
+              {session.track_name.split("_").join(" ")}
+            </Td>
             <Td>{session.session_type}</Td>
           </Tr>
         ))}
