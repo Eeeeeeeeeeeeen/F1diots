@@ -19,7 +19,7 @@ export default function Footer() {
       >
         <SimpleGrid columns={2}>
           <Box />
-          <Box align="right">
+          <Box textAlign="right">
             <Stack margin="8px">
               <Link href="/track">Track Leaderboards</Link>
               <Link href="/">Sessions</Link>
