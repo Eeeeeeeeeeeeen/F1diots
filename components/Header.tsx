@@ -7,7 +7,7 @@ export default function Header() {
     <Flex
       p={3}
       borderBottom="2px"
-      borderColor="red.200"
+      borderColor="red.300"
       cursor="pointer"
       onClick={() => router.push("/")}
     >
